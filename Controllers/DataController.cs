@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using RubiksTider.Model;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Dapper;
 using MySql.Data.MySqlClient;
@@ -24,9 +25,20 @@ namespace RubiksTider.Controllers
         }
 
         [HttpPost]
-        public double CreateRubiksTid(Data rubikstid)
+        public void CreateRubiksTid(Result result)
         {
-            return rubikstid.Time = 34.45d;
+            //double result = 25.11;
+            SendResultToDb(result);
+
+            //return result;
+        }
+
+        private void SendResultToDb(Result result)
+        {
+            var connection = GetConnection();
+            var sqlCode = "INSERT INTO times(Time)" +
+                               $"VALUES({result.Time.ToString(CultureInfo.InvariantCulture)})";
+            connection.Execute(sqlCode);
         }
 
         public List<Data> GetDataFromDb()
