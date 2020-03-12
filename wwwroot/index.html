@@ -2,9 +2,93 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title></title>
 </head>
 <body>
-    <h1>Hei!</h1>
+<h1>Hei!</h1>
+
+<input type="text" id="inputTime" value="" />
+<button onclick="getInput()">Press here to submit!</button>
+<br />
+<br />
+<button onclick="fetchData()">Show Table</button>
+<div id="tableDiv"></div>
+
+<script>
+
+    const fetchData = () => {
+        axios.get('https://localhost:5001/api/Data')
+            .then(response => {
+                let times = response.data;
+                //console.log(times);
+                showTable(times);
+            })
+            .catch(error => console.error(error));
+    };
+
+    fetchData();
+
+
+    function showTable(times) {
+        console.log(times);
+        let table = document.getElementById("tableDiv");
+        let html = `
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Times</th>
+                </tr>
+        `;
+
+        for (let i = 0; i < times.length; i++) {
+            html += `
+                <tr>
+                    <td>${times[i].id}</td>
+                    <td>${times[i].time}</td>
+                </tr>
+            `;
+        }
+
+        html += `</table>`;
+        table.innerHTML = html;
+    }
+
+
+    const submitTime = (time) => {
+        let submission = {"Time": time};
+        axios.post('https://localhost:5001/api/Data', submission)
+            .then(response => {
+                console.log("This worked?");
+                console.log(response.data);
+            })
+            .catch(error => console.error(error));
+    };
+
+
+    function getInput() {
+        let input = document.getElementById("inputTime").value;
+        if (isValid(input)) {
+            submitTime(parseFloat(input));
+            console.log("Input is accepted.");
+            return;
+        }
+        console.log("Input is rejected.");
+        document.getElementById("inputTime").value = "";
+    }
+
+    function isValid(input) {
+        input = parseFloat(input);
+        if (input === NaN) {
+            return false;
+        }
+        return true;
+    }
+
+    function UpdateTable() {
+        let times = fetchData();
+        console.log(times);
+    }
+</script>
 </body>
 </html>
