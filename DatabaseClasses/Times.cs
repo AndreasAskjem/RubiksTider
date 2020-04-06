@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace RubiksTider.Model
+namespace RubiksTider.DatabaseClasses
 {
-    public class Data
+    public partial class Times
     {
         public int Id { get; set; }
         public double Time { get; set; }

@@ -4,18 +4,35 @@
     <meta charset="utf-8" />
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title></title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Hei!</h1>
+<h1 id="header">Hei!</h1>
 
-<input type="text" id="inputTime" value="" />
-<button onclick="getInput()">Press here to submit!</button>
+<input type="text" id="username" />
+<button onclick="useName()">Use name</button>
+<br />
+<input type="text" id="inputTime" />
+<button onclick="getInput()">Press here to submit time!</button>
+<br />
+<input type="text" id="nameSearch" />
+<button onclick="nameSearch()">Search for name!</button>
 <br />
 <br />
-<button onclick="fetchData()">Show Table</button>
+<button onclick="fetchData()">Show whole table!</button>
 <div id="tableDiv"></div>
 
 <script>
+    let model = {
+        name: ""
+    }
 
     const fetchData = () => {
         axios.get('https://localhost:5001/api/Data')
@@ -37,6 +54,7 @@
             <table>
                 <tr>
                     <th>Id</th>
+                    <th>Name</th>
                     <th>Times</th>
                 </tr>
         `;
@@ -45,6 +63,7 @@
             html += `
                 <tr>
                     <td>${times[i].id}</td>
+                    <td>${times[i].name}</td>
                     <td>${times[i].time}</td>
                 </tr>
             `;
@@ -56,8 +75,15 @@
 
 
     const submitTime = (time) => {
-        let submission = {"Time": time};
-        axios.post('https://localhost:5001/api/Data', submission)
+
+        model.name = model.name === "" ? null : model.name;
+
+        let submission = JSON.stringify({
+            "Time": time,
+            "Name": model.name
+        });
+        const headers = {'Content-Type': 'application/json'}
+        axios.post('https://localhost:5001/api/Data', submission, {headers: headers})
             .then(response => {
                 console.log("This worked?");
                 console.log(response.data);
@@ -89,6 +115,16 @@
         let times = fetchData();
         console.log(times);
     }
+
+
+    function useName() {
+        model.name = document.getElementById("username").value;
+
+        let headerTxt = model.name === "" ? "Hei!" : `Hei ${model.name}!`;
+        document.getElementById("header").innerHTML = headerTxt;
+    }
+
+    //Scaffold-DbContext "Server=localhost;Database=rubikstimes;User=Andreas;Port=3300;Password=1234;" Pomelo.EntityFrameworkCore.MySql -OutputDir "DatabaseClasses" -Context "Controllers/DataController.cs" -f
 </script>
 </body>
 </html>
