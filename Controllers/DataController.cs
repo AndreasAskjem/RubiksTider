@@ -18,26 +18,25 @@ namespace RubiksTider.Controllers
 
 
         [HttpGet]
-        public async Task<List<Data>> GetOutput()
+        public async Task<List<Data>> GetOutput(Data data)
         {
             var results = Task.Run(GetDataFromDb);
+            Console.WriteLine(data.Name);
             return await results;
         }
 
         [HttpPost]
         public void CreateRubiksTid(Result result)
         {
-            //double result = 25.11;
             SendResultToDb(result);
-
-            //return result;
         }
 
-        private void SendResultToDb(Result result)
+        public void SendResultToDb(Result result)
         {
             var connection = GetConnection();
-            var sqlCode = "INSERT INTO times(Time)" +
-                               $"VALUES({result.Time.ToString(CultureInfo.InvariantCulture)})";
+            var sqlCode = "INSERT INTO times(time, name)" +
+                               $"VALUES({result.Time.ToString(CultureInfo.InvariantCulture)}," +
+                                    $"\"{result.Name}\")";
             connection.Execute(sqlCode);
         }
 
@@ -48,7 +47,7 @@ namespace RubiksTider.Controllers
             return connection.Query<Data>(sqlCode).ToList();
         }
 
-        private static MySqlConnection GetConnection()
+        public static MySqlConnection GetConnection()
         {
             var connectionString =
                 "Server=localhost;" +
