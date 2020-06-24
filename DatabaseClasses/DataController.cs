@@ -21,8 +21,8 @@ namespace RubiksTider.DatabaseClasses
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySql("server=localhost;database=rubikstimes;user=Andreas;port=3300;password=1234", x => x.ServerVersion("8.0.19-mysql"));
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySql("server=localhost;database=rubikstider;user=Andreas;port=3306;password=1234567b", x => x.ServerVersion("8.0.19-mysql"));
             }
         }
 

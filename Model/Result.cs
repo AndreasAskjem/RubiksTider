@@ -7,7 +7,6 @@ namespace RubiksTider.Model
 {
     public class Result
     {
-        //public double
         public double Time { get; set; }
         public string Name { get; set; }
     }

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Dapper;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 
 namespace RubiksTider.Controllers
@@ -51,10 +52,10 @@ namespace RubiksTider.Controllers
         {
             var connectionString =
                 "Server=localhost;" +
-                "Database=rubikstimes;" +
+                "Database=rubikstider;" +
                 "User=Andreas;" +
-                "Port=3300;" +
-                "Password=1234;";
+                "Port=3306;" +
+                "Password=1234567b;";
 
             return new MySqlConnection(connectionString);
         }
